@@ -33,6 +33,19 @@ namespace PenguinPoints
             parent.SetChild(this);
         }
 
+        public Item ItemClicked(Point mousePos)
+        {
+            foreach(Item i in items)
+            {
+                if(i.Size.Contains(mousePos))
+                {
+                    return i;
+                }
+            }
+
+            return null;
+        }
+
         private void SetChild(Slide child)
         {
             next = child;
