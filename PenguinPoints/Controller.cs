@@ -16,7 +16,7 @@ namespace PenguinPoints
         InputManager im;
         public bool editing = true;
 
-        bool editingText = false;
+        bool editingItem = false;
 
         ToolType selectedTool;
         float doubleclick = 0;
@@ -56,6 +56,11 @@ namespace PenguinPoints
             
             if(editing)
             {
+                if(editingItem)
+                {
+                    selectedItem.Edit(this);
+                }
+
                 if (im.JustPressed(Microsoft.Xna.Framework.Input.Keys.Enter))
                 {
                     editing = false;
@@ -73,12 +78,17 @@ namespace PenguinPoints
                         selectedTool = ToolType.Image;
                     }
 
+                    if(selectedItem == null)
+                    {
+                        editingItem = false;
+                    }
+
                     if (doubleclick > 0)
                     {
                         
                         if (selectedItem != null)
                         {
-                            selectedItem.Edit(this);
+                            editingItem = true;
                         }
                     }
                     doubleclick = 400.0f;
@@ -180,6 +190,8 @@ namespace PenguinPoints
                     case Keys.OemMinus: if (shift) { key = '_'; } else { key = '-'; } return true;
                     case Keys.OemComma: if (shift) { key = '<'; } else { key = ','; } return true;
                     case Keys.Space: key = ' '; return true;
+
+                    case Keys.Back: key = '™'; return true;
                 }
             }
 

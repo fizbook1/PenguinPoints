@@ -45,7 +45,15 @@ namespace PenguinPoints
             char addChar;
             if(control.TryConvertKeyboardInput(out addChar))
             {
-                text.Append(addChar);
+                if(addChar == '™' && text.Length > 0)
+                {
+                    text.Remove(text.Length - 1, 1);
+                }
+                else
+                {
+                    text.Append(addChar);
+                }
+                
             }
             
         }
