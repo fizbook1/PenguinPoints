@@ -42,20 +42,19 @@ namespace PenguinPoints
             {
                 text.Clear();
             }
-            char addChar;
+            string addChar;
             if(control.TryConvertKeyboardInput(out addChar))
             {
-                if(addChar == '™' && text.Length > 0)
+                if(addChar.Equals("™") && text.Length > 0)
                 {
                     text.Remove(text.Length - 1, 1);
                 }
                 else
                 {
                     text.Append(addChar);
+
                 }
-                
             }
-            
         }
 
         public override void Drag(Vector2 mousepos)

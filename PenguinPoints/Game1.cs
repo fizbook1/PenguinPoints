@@ -5,6 +5,20 @@ using A1r.Input;
 
 namespace PenguinPoints
 {
+    //Är linux lärare
+    //försöker ta upp en presentation
+    // * Min homebrew shitbox techpad 9000 startar upp efter 10 min
+    // * min självmoddade ubuntu 1.0.12.0 sprakar ur sig 10 datorfönster som berättar alla detaljer om datorn
+    // * Elev frågar var Powerpointen är
+    // * Tfw powerpoints är bara för sheeple jag har linux penguinpoints
+    // * klickar på penguinpoints
+    // * Datorn börjar flåsa som ett mindre flygplan, eleverna längst fram börjar klaga
+    // * Ubuntu börjar spruta ur sig error meddelande, jag glömde compilea all min custom penguinpoint kod som hade visat en ascool gif i min powerpoint
+    // * börjar arg gråta
+    // * tfw penguinpoints krashar ubuntu så att värmesensorn stängs av, min techbad börjar brinna
+    // * elever skriker och gråter
+    // * Niagara måste evakueras efter brand i sal A367
+    // * tfw still better than sheeple mac user
     public class Game1 : Game
     {
         private GraphicsDeviceManager graphics;
