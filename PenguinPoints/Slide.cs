@@ -56,6 +56,11 @@ namespace PenguinPoints
             items.Add(item);
         }
 
+        public void DeleteItem(Item item)
+        {
+            items.Remove(item);
+        }
+
         public void Draw(SpriteBatch sb)
         {
             foreach(Item i in items)

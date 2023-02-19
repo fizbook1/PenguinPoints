@@ -26,7 +26,7 @@ namespace PenguinPoints
         bool grabbed = false;
         Point offset = Point.Zero;
 
-        Rectangle textRectangle, imageRectangle;
+        Rectangle textRectangle, imageRectangle, startRectangle, deleteRectangle;
         public Controller(InputManager input)
         {
             im = input;
@@ -34,6 +34,8 @@ namespace PenguinPoints
             double widthmult = 1 + (1280f - 1021f) / 1021f;
             textRectangle = new Rectangle((int)(417 * widthmult), 0, (int)(38 * widthmult), 43);
             imageRectangle = new Rectangle((int)(455 * widthmult), 0, (int)(41 * widthmult), 43);
+            startRectangle = new Rectangle((int)(19 * widthmult), 0, (int)(38 * widthmult), 43);
+            deleteRectangle = new Rectangle((int)(494 * widthmult), 0, (int)(38 * widthmult), 43);
         }
 
         
@@ -65,32 +67,19 @@ namespace PenguinPoints
                     selectedItem.Edit(this);
                 }
 
-                if (im.JustPressed(Microsoft.Xna.Framework.Input.Keys.Enter))
+                if (im.JustPressed(Keys.Enter))
                 {
                     editing = false;
                 }
 
-                if (im.IsHeld(MouseInput.LeftButton) && selectedItem != null)
-                {
-                    if (selectedItem.Size.Contains(im.GetMousePosition()) && !grabbed)
-                    {
-                        offset = selectedItem.Position.ToPoint() - im.GetMousePosition();
-                        grabbed = true;
-                    }
+                CheckDelete();
 
-                    if (grabbed)
-                    {
-                        selectedItem.Drag((im.GetMousePosition() + offset).ToVector2());
-                    }
-                }
-                else
-                {
-                    grabbed = false;
-                }
+                CheckGrab();
 
                 if (im.JustPressed(MouseInput.LeftButton))
                 {
                     selectedItem = presentation.current.ItemClicked(im.GetMousePosition());
+
                     if(textRectangle.Contains(im.GetMousePosition()))
                     {
                         selectedTool = ToolType.Text;
@@ -99,8 +88,9 @@ namespace PenguinPoints
                     {
                         selectedTool = ToolType.Image;
                     }
+                    
 
-                    if(selectedItem == null)
+                    if (selectedItem == null)
                     {
                         editingItem = false;
                     }
@@ -133,7 +123,45 @@ namespace PenguinPoints
                 }
 
             }
-            
+
+            void CheckDelete()
+            {
+                if (im.JustPressed(Keys.Delete) && selectedItem != null)
+                {
+                    presentation.current.DeleteItem(selectedItem);
+                    selectedItem = null;
+                }
+
+                if (im.JustPressed(MouseInput.LeftButton))
+                {
+                    if (deleteRectangle.Contains(im.GetMousePosition()) && selectedItem != null)
+                    {
+                        presentation.current.DeleteItem(selectedItem);
+                        selectedItem = null;
+                    }
+                }
+            }
+
+            void CheckGrab()
+            {
+                if (im.IsHeld(MouseInput.LeftButton) && selectedItem != null)
+                {
+                    if (selectedItem.Size.Contains(im.GetMousePosition()) && !grabbed)
+                    {
+                        offset = selectedItem.Position.ToPoint() - im.GetMousePosition();
+                        grabbed = true;
+                    }
+
+                    if (grabbed)
+                    {
+                        selectedItem.Drag((im.GetMousePosition() + offset).ToVector2());
+                    }
+                }
+                else
+                {
+                    grabbed = false;
+                }
+            }
             
         }
 
