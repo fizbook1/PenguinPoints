@@ -22,6 +22,10 @@ namespace PenguinPoints
         float doubleclick = 0;
         Item selectedItem;
 
+        //drag related
+        bool grabbed = false;
+        Point offset = Point.Zero;
+
         Rectangle textRectangle, imageRectangle;
         public Controller(InputManager input)
         {
@@ -66,7 +70,25 @@ namespace PenguinPoints
                     editing = false;
                 }
 
-                if(im.JustPressed(MouseInput.LeftButton))
+                if (im.IsHeld(MouseInput.LeftButton) && selectedItem != null)
+                {
+                    if (selectedItem.Size.Contains(im.GetMousePosition()) && !grabbed)
+                    {
+                        offset = selectedItem.Position.ToPoint() - im.GetMousePosition();
+                        grabbed = true;
+                    }
+
+                    if (grabbed)
+                    {
+                        selectedItem.Drag((im.GetMousePosition() + offset).ToVector2());
+                    }
+                }
+                else
+                {
+                    grabbed = false;
+                }
+
+                if (im.JustPressed(MouseInput.LeftButton))
                 {
                     selectedItem = presentation.current.ItemClicked(im.GetMousePosition());
                     if(textRectangle.Contains(im.GetMousePosition()))
@@ -117,7 +139,7 @@ namespace PenguinPoints
 
         public bool TryConvertKeyboardInput(out string chars)
         {
-            //credit to Roy T. 2010, modified to work with penguinpoints by Fiz 2023
+            //credit to Roy T. 2010, modified to work with penguinpoints by Fiz 2023 to support fast typing 
             Keys[] keys = im.currentKeyboardState.GetPressedKeys();
             bool shift = im.currentKeyboardState.IsKeyDown(Keys.LeftShift) || im.currentKeyboardState.IsKeyDown(Keys.RightShift);
 

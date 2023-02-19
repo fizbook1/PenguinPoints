@@ -11,6 +11,7 @@ namespace PenguinPoints
         protected Vector2 position;
         protected Rectangle size;
 
+        public Vector2 Position { get => position; }
         public Rectangle Size { get => size; }
 
         public abstract void Edit(Controller control);
@@ -59,7 +60,8 @@ namespace PenguinPoints
 
         public override void Drag(Vector2 mousepos)
         {
-            //throw new NotImplementedException();
+            position = mousepos;
+            //size.Location = position.ToPoint();
         }
 
         public override void Draw(SpriteBatch sb)
@@ -82,7 +84,8 @@ namespace PenguinPoints
 
         public override void Drag(Vector2 mousepos)
         {
-            //throw new NotImplementedException();
+            position = mousepos;
+            size.Location = position.ToPoint();
         }
 
         public override void Draw(SpriteBatch sb)
