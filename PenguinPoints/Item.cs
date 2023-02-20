@@ -70,7 +70,7 @@ namespace PenguinPoints
                 }
             }
 
-            size = new Rectangle(position.ToPoint(), new Point((int)Game1.font.MeasureString(longestline).X, (int)Game1.font.MeasureString("A").Y * texts.Count));
+            size = new Rectangle(position.ToPoint(), new Point((int)Game1.font.MeasureString(longestline).X + 3, 3 + ((int)Game1.font.MeasureString("A").Y * texts.Count)));
 
         }
 

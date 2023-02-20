@@ -68,6 +68,7 @@ namespace PenguinPoints
                 if(editingItem)
                 {
                     selectedItem.Edit(this);
+                    ItemSelected();
                 }
 
                 if (im.JustPressed(Keys.Enter) && !editingItem)
@@ -174,8 +175,6 @@ namespace PenguinPoints
 
         private void ItemSelected()
         {
-            
-
             selectionRectangle = Game1.self.GenerateTexture(selectedItem.Size.Width, selectedItem.Size.Height);
         }
 
@@ -186,11 +185,6 @@ namespace PenguinPoints
             bool shift = im.currentKeyboardState.IsKeyDown(Keys.LeftShift) || im.currentKeyboardState.IsKeyDown(Keys.RightShift);
 
             string characters = "";
-
-            if(keys.Length > 2)
-            {
-                int debug = 5;
-            }
 
             for(int i = 0; i < keys.Length; i++)
             {
@@ -282,10 +276,14 @@ namespace PenguinPoints
 
         public void Draw(SpriteBatch sb)
         {
-            if(selectedItem != null)
+            if(editing)
             {
-                sb.Draw(selectionRectangle, selectedItem.Position, Color.White);
+                if (selectedItem != null)
+                {
+                    sb.Draw(selectionRectangle, selectedItem.Position, Color.White);
+                }
             }
+            
             
         }
 
