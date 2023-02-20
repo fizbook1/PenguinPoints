@@ -29,6 +29,7 @@ namespace PenguinPoints
 
         public static SpriteFont font;
         public static Texture2D icon, interfacebar, icon_small;
+        public static Game1 self;
 
         float deltaTime = 0;
 
@@ -40,7 +41,7 @@ namespace PenguinPoints
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             graphics.IsFullScreen = false;
-            
+            self = this;
         }
 
         protected override void Initialize()
@@ -55,6 +56,11 @@ namespace PenguinPoints
             spriteBatch = new SpriteBatch(GraphicsDevice);
             inputManager = new InputManager(this);
             controller = new Controller(inputManager);
+
+            font = Content.Load<SpriteFont>(@"font");
+            icon = Content.Load<Texture2D>(@"penguinpoints");
+            icon_small = Content.Load<Texture2D>(@"default_small");
+            interfacebar = Content.Load<Texture2D>(@"interfacebar");
 
             {
                 Slide slide1, slide2, slide3, slide4, slide5;
@@ -87,10 +93,7 @@ namespace PenguinPoints
             
             presentation.StartPresentation();
 
-            font = Content.Load<SpriteFont>(@"font");
-            icon = Content.Load<Texture2D>(@"penguinpoints");
-            icon_small = Content.Load<Texture2D>(@"default_small");
-            interfacebar = Content.Load<Texture2D>(@"interfacebar");
+            
             // TODO: use this.Content to load your game content here
 
             graphics.PreferredBackBufferHeight = 720;
@@ -118,7 +121,7 @@ namespace PenguinPoints
             
 
             presentation.Draw(spriteBatch);
-
+            controller.Draw(spriteBatch);
 
             if (controller.editing)
             {
@@ -131,5 +134,69 @@ namespace PenguinPoints
 
             base.Draw(gameTime);
         }
+
+        public Texture2D GenerateTexture(int width, int height)
+        {
+            Texture2D texture = new Texture2D(GraphicsDevice, width, height);
+            Color[] data = new Color[width * height];
+            for (int pixel = 0; pixel < data.Length; pixel++)
+            {
+                data[pixel] = Color.Transparent;
+                if (pixel < width)
+                {
+                    if(pixel % 3 == 1)
+                    {
+                        data[pixel] = Color.Black;
+                    }
+                    else
+                    {
+                        data[pixel] = Color.Transparent;
+                    }
+                }
+
+                if(pixel%height == 0)
+                {
+                    if (pixel % 3 == 1)
+                    {
+                        data[pixel] = Color.Black;
+                    }
+                    else
+                    {
+                        data[pixel] = Color.Transparent;
+                    }
+                }
+
+                if (pixel % height == width - 1)
+                {
+                    if (pixel % 3 == 1)
+                    {
+                        data[pixel] = Color.Black;
+                    }
+                    else
+                    {
+                        data[pixel] = Color.Transparent;
+                    }
+                }
+
+                if (pixel > width * (height - 1))
+                {
+                    if (pixel % 3 == 1)
+                    {
+                        data[pixel] = Color.Black;
+                    }
+                    else
+                    {
+                        data[pixel] = Color.Transparent;
+                    }
+                }
+
+                
+            }
+
+            texture.SetData(data);
+
+            return texture;
+        }
+
     }
 }

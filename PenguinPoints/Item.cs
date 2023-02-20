@@ -23,50 +23,70 @@ namespace PenguinPoints
 
     class Text : Item
     {
-        StringBuilder text;
+        List<StringBuilder> texts = new List<StringBuilder>();
+        StringBuilder longestline = new StringBuilder("i");
         Color color = Color.Black;
         public Text(string text, Vector2 position)
         {
-            this.text = new StringBuilder(text);
+            texts.Add(new StringBuilder(text));
             this.position = position;
-            size = new Rectangle(position.ToPoint(), new Point(60, 60));
+            size = new Rectangle(position.ToPoint(), Game1.font.MeasureString(texts[^1]).ToPoint());
         }
 
         public Text()
         {
-
+            
         }
 
         public override void Edit(Controller control)
         {
-            if(text.Equals("New Text"))
+            if(texts[^1].Equals("New Text"))
             {
-                text.Clear();
+                texts[^1].Clear();
             }
             string addChar;
             if(control.TryConvertKeyboardInput(out addChar))
             {
-                if(addChar.Equals("™") && text.Length > 0)
+                if(addChar.Equals("™") && texts[^1].Length > 0)
                 {
-                    text.Remove(text.Length - 1, 1);
+                    texts[^1].Remove(texts[^1].Length - 1, 1);
+                }
+                else if(addChar.Equals("™") && texts.Count > 1)
+                {
+                    texts.RemoveAt(texts.Count - 1);
+                }
+                else if(addChar.Equals("Ã"))
+                {
+                    texts.Add(new StringBuilder());
                 }
                 else
                 {
-                    text.Append(addChar);
+                    texts[^1].Append(addChar);
+                }
 
+                if(longestline.Length < texts[^1].Length)
+                {
+                    longestline = texts[^1];
                 }
             }
+
+            size = new Rectangle(position.ToPoint(), new Point((int)Game1.font.MeasureString(longestline).X, (int)Game1.font.MeasureString("A").Y * texts.Count));
+
         }
 
         public override void Drag(Vector2 mousepos)
         {
             position = mousepos;
-            //size.Location = position.ToPoint();
+            size.Location = position.ToPoint();
         }
 
         public override void Draw(SpriteBatch sb)
         {
-            sb.DrawString(Game1.font, text, position, color);
+            for(int i = 0; i < texts.Count; i++)
+            {
+                sb.DrawString(Game1.font, texts[i], position + new Vector2(0, i * (0 + Game1.font.MeasureString("A").Y)), color);
+            }
+            
         }
     }
 

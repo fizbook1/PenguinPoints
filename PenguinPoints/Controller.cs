@@ -1,5 +1,6 @@
 ﻿using A1r.Input;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ namespace PenguinPoints
         //drag related
         bool grabbed = false;
         Point offset = Point.Zero;
+
+        Texture2D selectionRectangle;
 
         Rectangle textRectangle, imageRectangle, startRectangle, deleteRectangle;
         public Controller(InputManager input)
@@ -67,7 +70,7 @@ namespace PenguinPoints
                     selectedItem.Edit(this);
                 }
 
-                if (im.JustPressed(Keys.Enter))
+                if (im.JustPressed(Keys.Enter) && !editingItem)
                 {
                     editing = false;
                 }
@@ -93,6 +96,10 @@ namespace PenguinPoints
                     if (selectedItem == null)
                     {
                         editingItem = false;
+                    }
+                    else
+                    {
+                        ItemSelected();
                     }
 
                     if (doubleclick > 0)
@@ -163,6 +170,13 @@ namespace PenguinPoints
                 }
             }
             
+        }
+
+        private void ItemSelected()
+        {
+            
+
+            selectionRectangle = Game1.self.GenerateTexture(selectedItem.Size.Width, selectedItem.Size.Height);
         }
 
         public bool TryConvertKeyboardInput(out string chars)
@@ -251,6 +265,8 @@ namespace PenguinPoints
                         case Keys.Space: characters += ' '; break;
 
                         case Keys.Back: characters = "™"; break;
+
+                        case Keys.Enter: characters = "Ã"; break;
                     }
                 }
             }
@@ -262,6 +278,15 @@ namespace PenguinPoints
             }
             
             return true;
+        }
+
+        public void Draw(SpriteBatch sb)
+        {
+            if(selectedItem != null)
+            {
+                sb.Draw(selectionRectangle, selectedItem.Position, Color.White);
+            }
+            
         }
 
     }
